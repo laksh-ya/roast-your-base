@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Zap, Swords, HelpCircle, Github, ExternalLink } from "lucide-react"
+import { Loader2, Zap, Swords, HelpCircle, Github, ExternalLink, Share2, MoreHorizontal } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -24,6 +24,8 @@ export default function COCRoastPage() {
   const [loading, setLoading] = useState(false)
   const [showTutorial, setShowTutorial] = useState(false)
   const [showHoverVideo, setShowHoverVideo] = useState(false)
+  const [showShareOptions, setShowShareOptions] = useState(false)
+  const [showMoreOptions, setShowMoreOptions] = useState(false)
 
   const handleRoast = async () => {
     if (!playerCode.trim()) return
@@ -54,6 +56,112 @@ export default function COCRoastPage() {
       )
     } finally {
       setLoading(false)
+    }
+  }
+
+  const shareToSocial = (platform: string) => {
+    if (!playerData || !roast) {
+      alert("No roast available to share!")
+      return
+    }
+
+    console.log(`Sharing to ${platform}`)
+
+    const shareText = `🔥 My COC base "${playerData.name}" just got ABSOLUTELY ROASTED by AI! 💀
+
+"${roast.substring(0, 200)}${roast.length > 200 ? "..." : ""}"
+
+Try roasting your base too:`
+
+    const shareUrl = window.location.origin
+
+    const urls = {
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(shareText + " " + shareUrl)}`,
+      discord: `https://discord.com/channels/@me`,
+      instagram: `https://www.instagram.com/`,
+    }
+
+    if (platform === "discord") {
+      // For Discord, we'll copy to clipboard and open Discord
+      copyToClipboard()
+      window.open(urls.discord, "_blank")
+      alert("💬 Text copied! Paste it in Discord!")
+    } else if (platform === "instagram") {
+      // For Instagram, we'll copy to clipboard and open Instagram
+      copyToClipboard()
+      window.open(urls.instagram, "_blank")
+      alert("📸 Text copied! Share it in your Instagram story or post!")
+    } else {
+      const url = urls[platform as keyof typeof urls]
+      if (url) {
+        console.log("Opening URL:", url)
+        window.open(url, "_blank", "width=600,height=400")
+      }
+    }
+  }
+
+  const useNativeShare = async () => {
+    if (!playerData || !roast) {
+      alert("No roast available to share!")
+      return
+    }
+
+    const shareText = `🔥 My COC base "${playerData.name}" just got ABSOLUTELY ROASTED by AI! 💀
+
+"${roast.substring(0, 200)}${roast.length > 200 ? "..." : ""}"
+
+Try roasting your base too: ${window.location.origin}`
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "🔥 My COC Base Got Roasted!",
+          text: shareText,
+          url: window.location.origin,
+        })
+        console.log("Native share successful")
+      } catch (error) {
+        console.log("Native share cancelled or failed:", error)
+        // Fallback to clipboard
+        copyToClipboard()
+      }
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      copyToClipboard()
+      alert("📱 Native sharing not available. Text copied to clipboard instead!")
+    }
+  }
+
+  const copyToClipboard = async () => {
+    if (!playerData || !roast) {
+      alert("No roast available to copy!")
+      return
+    }
+
+    const shareText = `🔥 My COC base "${playerData.name}" just got ROASTED by AI! 💀
+
+"${roast}"
+
+Try roasting your base too at: ${window.location.origin}`
+
+    try {
+      await navigator.clipboard.writeText(shareText)
+      console.log("Text copied to clipboard")
+    } catch (error) {
+      console.error("Failed to copy:", error)
+      // Fallback for older browsers
+      const textArea = document.createElement("textarea")
+      textArea.value = shareText
+      document.body.appendChild(textArea)
+      textArea.select()
+      try {
+        document.execCommand("copy")
+        console.log("Text copied using fallback method")
+      } catch (err) {
+        console.error("Fallback copy failed:", err)
+      }
+      document.body.removeChild(textArea)
     }
   }
 
@@ -266,10 +374,113 @@ export default function COCRoastPage() {
 
               {roast ? (
                 <div className="bg-gradient-to-r from-red-900/50 to-orange-900/50 border border-red-500/50 rounded-lg p-4 sm:p-6 shadow-lg">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-lg">🔥</div>
-                    <span className="font-bold text-red-300 text-base sm:text-lg">AI ROAST INCOMING!</span>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
+                        🔥
+                      </div>
+                      <span className="font-bold text-red-300 text-base sm:text-lg">AI ROAST INCOMING!</span>
+                    </div>
+
+                    {/* Simple Share Button */}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="bg-red-800/50 border-red-600 text-red-200 hover:bg-red-700/50 hover:text-red-100"
+                      onClick={() => {
+                        console.log("Share button clicked")
+                        if (playerData && roast) {
+                          setShowShareOptions(!showShareOptions)
+                        } else {
+                          alert("❌ No roast available to share! Get roasted first! 🔥")
+                        }
+                      }}
+                    >
+                      <Share2 className="w-4 h-4 mr-2" />
+                      Share Roast
+                    </Button>
                   </div>
+
+                  {/* Share Options - Show/Hide */}
+                  {showShareOptions && (
+                    <div className="mb-4 p-4 bg-red-800/30 rounded-lg border border-red-600">
+                      <h4 className="text-red-200 font-bold mb-3 text-sm">🔥 Share Your Epic Roast:</h4>
+
+                      <div className="grid grid-cols-2 gap-2 mb-3">
+                        <Button
+                          size="sm"
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                          onClick={() => shareToSocial("twitter")}
+                        >
+                          🐦 Twitter
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="bg-green-600 hover:bg-green-700 text-white"
+                          onClick={() => shareToSocial("whatsapp")}
+                        >
+                          💬 WhatsApp
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                          onClick={() => shareToSocial("discord")}
+                        >
+                          💬 Discord
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="bg-pink-600 hover:bg-pink-700 text-white"
+                          onClick={() => shareToSocial("instagram")}
+                        >
+                          📸 Instagram
+                        </Button>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-2">
+                        <Button
+                          size="sm"
+                          className="bg-gray-600 hover:bg-gray-700 text-white"
+                          onClick={() => {
+                            setShowMoreOptions(!showMoreOptions)
+                          }}
+                        >
+                          <MoreHorizontal className="w-4 h-4 mr-2" />
+                          More Options
+                        </Button>
+                      </div>
+
+                      {/* More Options */}
+                      {showMoreOptions && (
+                        <div className="mt-3 p-3 bg-gray-800/50 rounded border border-gray-600">
+                          <div className="grid grid-cols-1 gap-2">
+                            <Button
+                              size="sm"
+                              className="bg-blue-500 hover:bg-blue-600 text-white"
+                              onClick={useNativeShare}
+                            >
+                              📱 Native Share Menu
+                            </Button>
+                            <Button
+                              size="sm"
+                              className="bg-gray-500 hover:bg-gray-600 text-white"
+                              onClick={() => {
+                                copyToClipboard()
+                                alert("✅ Roast copied to clipboard! 📋")
+                              }}
+                            >
+                              📋 Copy to Clipboard
+                            </Button>
+                          </div>
+                          <div className="mt-2 p-2 bg-blue-900/30 border border-blue-600 rounded text-xs text-blue-200">
+                            💡 <strong>Native Share:</strong> Opens your device's built-in share menu
+                            (iOS/Android/Windows/Mac)
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   <div className="text-red-100 whitespace-pre-wrap leading-relaxed text-sm sm:text-base font-medium">
                     {roast}
                   </div>
