@@ -176,7 +176,7 @@ Try roasting your base too at: ${window.location.origin}`
           backgroundImage: "radial-gradient(rgba(251,191,36,1) 3px, transparent 3px)",
           backgroundSize: "40px 40px",
         }}
-      />
+      ></div>
 
       {/* Decorative elements */}
       <div className="absolute top-10 left-10 w-16 h-16 bg-yellow-400/20 rounded-full blur-xl"></div>
@@ -538,7 +538,7 @@ Try roasting your base too at: ${window.location.origin}`
 
               {/* Tech Stack */}
               <div className="text-center md:text-right">
-                <h3 className="text-amber-200 font-bold text-lg mb-2">{"⚡ Powered By\nGemini"}</h3>
+                <h3 className="text-amber-200 font-bold text-lg mb-2">⚡ Powered By Gemini</h3>
                 <div className="flex flex-wrap justify-center md:justify-end gap-2">
                   <Badge className="bg-blue-600 text-blue-100 border-blue-700">COC API</Badge>
                   <Badge className="bg-purple-600 text-purple-100 border-purple-700">Gemini AI</Badge>
