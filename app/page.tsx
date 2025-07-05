@@ -170,9 +170,7 @@ Try roasting your base too at: ${window.location.origin}`
       {/* COC-style background pattern */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 opacity-10
-             [background-image:radial-gradient(rgba(251,191,36,1)_3px,transparent_3px)]
-             [background-size:40px_40px]"
+        className="absolute inset-0 opacity-10 [background-image:radial-gradient(rgba(251,191,36,1)_3px,transparent_3px)] [background-size:40px_40px]"
       />
 
       {/* Decorative elements */}
