@@ -170,13 +170,10 @@ Try roasting your base too at: ${window.location.origin}`
       {/* COC-style background pattern */}
       <div
         aria-hidden="true"
-        className="absolute inset-0"
-        style={{
-          opacity: 0.1,
-          backgroundImage: "radial-gradient(rgba(251,191,36,1) 3px, transparent 3px)",
-          backgroundSize: "40px 40px",
-        }}
-      ></div>
+        className="absolute inset-0 opacity-10
+             [background-image:radial-gradient(rgba(251,191,36,1)_3px,transparent_3px)]
+             [background-size:40px_40px]"
+      />
 
       {/* Decorative elements */}
       <div className="absolute top-10 left-10 w-16 h-16 bg-yellow-400/20 rounded-full blur-xl"></div>
