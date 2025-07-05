@@ -170,7 +170,12 @@ Try roasting your base too at: ${window.location.origin}`
       {/* COC-style background pattern */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 opacity-10 [background-image:radial-gradient(rgba(251,191,36,1)_3px,transparent_3px)] [background-size:40px_40px]"
+        className="absolute inset-0"
+        style={{
+          opacity: 0.1,
+          backgroundImage: "radial-gradient(rgba(251,191,36,1) 3px, transparent 3px)",
+          backgroundSize: "40px 40px",
+        }}
       />
 
       {/* Decorative elements */}
@@ -533,7 +538,7 @@ Try roasting your base too at: ${window.location.origin}`
 
               {/* Tech Stack */}
               <div className="text-center md:text-right">
-                <h3 className="text-amber-200 font-bold text-lg mb-2">⚡ Powered By Gemini</h3>
+                <h3 className="text-amber-200 font-bold text-lg mb-2">{"⚡ Powered By\nGemini"}</h3>
                 <div className="flex flex-wrap justify-center md:justify-end gap-2">
                   <Badge className="bg-blue-600 text-blue-100 border-blue-700">COC API</Badge>
                   <Badge className="bg-purple-600 text-purple-100 border-purple-700">Gemini AI</Badge>
