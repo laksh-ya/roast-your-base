@@ -4,7 +4,7 @@
 
 *Roast Your Base* is an AI-powered web application that roasts Clash of Clans players' bases using their player data and optional base layout JSON. The app combines the Clash of Clans API with Google's Gemini AI to deliver savage, entertaining roasts tailored to each player's stats and base design.
 
-*Live Demo:* [Your deployment URL]*GitHub:* [Your repository URL]
+*Live Demo:* [Live](https://roastyourcocbase.vercel.app/) *GitHub:* [Harsh Tripathi](https://github.com/harshtripathi272)   [Lakshya Rathi](https://github.com/laksh-ya)
 
 ---
 
@@ -48,7 +48,7 @@
 
 The most critical technical decision was avoiding Supercell's official COC API limitations:
 
-typescript
+```typescript
 // Instead of direct Supercell API (requires static IP whitelisting)
 const response = await fetch(`https://api.clashofclans.com/v1/players/${playerTag}`)
 
@@ -59,29 +59,30 @@ const response = await fetch(`https://cocproxy.royaleapi.dev/v1/players/${player
     Accept: "application/json",
   },
 })
+```
 
 
 *Why Royal API Proxy?*
 
-- ✅ No static IP whitelisting required
-- ✅ Same data structure as official API
-- ✅ Better for serverless deployments (Vercel, Netlify)
-- ✅ Handles rate limiting automatically
+- No static IP whitelisting required
+- Same data structure as official API
+- Better for serverless deployments (Vercel, Netlify)
+- Handles rate limiting automatically
 
 
 #### *Player Tag Processing*
 
-typescript
+```typescript
 // Clean and encode player tags properly
 const cleanTag = playerCode.replace("#", "")
 const playerTag = `%23${cleanTag}` // URL encode the # symbol
-
+```
 
 #### *Gemini AI Integration*
 
 The roasting engine uses carefully crafted system prompts:
 
-typescript
+```typescript
 const roastPrompt = `You are a savage Clash of Clans roast master. 
 Roast this player's base and stats mercilessly but keep it fun and game-related.
 
@@ -101,11 +102,11 @@ const { text } = await generateText({
   model: google("gemini-2.0-flash"),
   prompt: roastPrompt
 })
-
+```
 
 #### *Error Handling Strategy*
 
-typescript
+```typescript
 // Comprehensive error handling for different API failures
 if (response.status === 404) {
   throw new Error("Player not found. Check your player tag and try again.")
@@ -114,7 +115,7 @@ if (response.status === 404) {
 } else if (response.status === 429) {
   throw new Error("Too many requests. Please wait a moment and try again.")
 }
-
+```
 
 ---
 
