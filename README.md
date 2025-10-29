@@ -131,7 +131,7 @@ The project originated from curiosity about a hidden feature in Clash of Clans:
 
 
 ### *Base JSON Structure*
-
+```python
 json
 {
   "buildings": [
@@ -152,7 +152,7 @@ json
   "traps": [...],
   "decorations": [...]
 }
-
+```
 
 ### *AI Analysis Integration*
 
