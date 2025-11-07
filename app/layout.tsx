@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     description: "Get your Clash of Clans base absolutely destroyed by AI! 🔥",
     images: ["/icon-192.png"],
   },
-    generator: 'v0.dev'
+    generator: 'v0.app'
 }
 
 export default function RootLayout({
