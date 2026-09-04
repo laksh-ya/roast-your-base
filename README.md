@@ -305,16 +305,6 @@ GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_key
 
 ---
 
-## Contributing
-
-The project is open source and welcomes contributions:
-
-- Bug reports and feature requests
-- Code improvements and optimizations
-- Documentation enhancements
-- Community feedback and testing
-
-
 ---
 
 *Built with curiosity, powered by AI, and fueled by the Clash of Clans community! 🔥*
